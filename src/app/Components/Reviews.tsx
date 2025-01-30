@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import Beard from "../../../public/Beard Grooming.jpeg";
 import Adult from "../../../public/Adult Hair.jpeg";
+import Image from "next/image";
 const testimonials = [
   {
     id: 1,
@@ -51,10 +52,12 @@ const TestimonialCarousel = () => {
         <div className="shadow-md p-6 text-center rounded-lg border">
           {/* Profile Image */}
           <div className="w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden">
-            <img
+            <Image
               src={testimonials[currentIndex].image}
               alt={testimonials[currentIndex].name}
               className="w-full h-full object-cover"
+              width={100}
+              height={100}
             />
           </div>
           {/* Stars */}
