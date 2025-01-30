@@ -14,15 +14,21 @@ const formSchema = z.object({
   });
 
   export const useFormLand = () => {
-   
+    // interface FormField {
+    //   name: string;
+    //   type: "text" | "password" | "number" | "email" | "textarea";
+    //   placeholder: string;
+    //   required: boolean;
+    //   label: string;
+    // }
   
     const form = useForm({
       resolver: zodResolver(formSchema),
     });
     console.log(form.formState.errors);
   
-    const onSubmit = async (data:{email:string, password:string}) => {
-      console.log(data);
+    const onSubmit = async () => {
+      // console.log(data);
       
     }  
 
