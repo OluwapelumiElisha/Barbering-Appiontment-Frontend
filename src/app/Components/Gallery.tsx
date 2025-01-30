@@ -2,7 +2,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";
 import Beard from "../../../public/Beard Grooming.jpeg";
 import Adult from "../../../public/Adult Hair.jpeg";
-import BeardTrim from "../../../public/Beard Trim.avif";
+// import BeardTrim from "../../../public/Beard Trim.avif";
 import Scalp from "../../../public/premium_photo-1706800175636-c3efbcf75c68.avif";
 import { Barlow } from "next/font/google";
 

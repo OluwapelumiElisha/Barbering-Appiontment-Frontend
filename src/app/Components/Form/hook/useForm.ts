@@ -21,8 +21,9 @@ const formSchema = z.object({
     });
     console.log(form.formState.errors);
   
-    const onSubmit = async (data:any) => {
-
+    const onSubmit = async (data:{email:string, password:string}) => {
+      console.log(data);
+      
     }  
 
     return{

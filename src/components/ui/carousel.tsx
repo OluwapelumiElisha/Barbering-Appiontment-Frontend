@@ -1,7 +1,7 @@
 "use client";
 import { IconArrowNarrowRight } from "@tabler/icons-react";
 import { Barlow, Work_Sans } from "next/font/google";
-import Image, { StaticImageData } from "next/image";
+import  { StaticImageData } from "next/image";
 // import Image from "next/image";
 import { useState, useRef, useId, useEffect } from "react";
 const barlow = Barlow({
@@ -76,7 +76,7 @@ const Slide = ({ slide, index, current, handleSlideClick }: SlideProps) => {
     event.currentTarget.style.opacity = "1";
   };
 
-  const { src, button, title, description, price } = slide;
+  const {  button, title, description, price } = slide;
 
   return (
     <div className="[perspective:1200px] [transform-style:preserve-3d]">
