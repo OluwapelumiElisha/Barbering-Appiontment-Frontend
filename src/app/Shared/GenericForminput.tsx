@@ -1,5 +1,5 @@
 import React from 'react';
-import { UseFormReturn } from 'react-hook-form'; // Import the type for the form
+import { UseFormReturn, FieldValues, Path } from 'react-hook-form'; // Import Path
 import { 
   FormDescription, 
   FormField, 
@@ -17,20 +17,20 @@ type OptionType = {
   label: string;
 };
 
-// Define the props type for GenericFormInput
-interface GenericFormInputProps {
+// Define the props type for GenericFormInput using a generic type
+interface GenericFormInputProps<TFieldValues extends FieldValues> {
   placeholder: string;
-  form: UseFormReturn<any>; // Type from react-hook-form
+  form: UseFormReturn<TFieldValues>; // Ensure strong typing for form
   label: string;
-  name: string;
-  type: 'text' | 'password' | 'email' | 'number' | 'textarea' | 'select'; // Restrict to valid types
+  name: Path<TFieldValues>; // Use Path type for name
+  type: 'text' | 'password' | 'email' | 'number' | 'textarea' | 'select';
   required?: boolean;
   description?: string;
-  options?: OptionType[]; // For select options
-  option?: OptionType[]; // For radio button options (commented out in your code)
+  options?: OptionType[];
 }
 
-const GenericFormInput: React.FC<GenericFormInputProps> = ({
+// Make the component accept a generic type for form fields
+const GenericFormInput = <TFieldValues extends FieldValues>({
   placeholder,
   form,
   label,
@@ -39,7 +39,7 @@ const GenericFormInput: React.FC<GenericFormInputProps> = ({
   required,
   description,
   options,
-}) => {
+}: GenericFormInputProps<TFieldValues>) => {
   switch (type) {
     case 'text':
     case 'password':
@@ -107,7 +107,7 @@ const GenericFormInput: React.FC<GenericFormInputProps> = ({
       break;
 
     default:
-      return null; // Return null if the type doesn't match
+      return null;
   }
 };
 
