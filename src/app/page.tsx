@@ -11,12 +11,15 @@ import AddressIcon from '../../public/address img.svg'
 import PhoneIcon from '../../public/phone img.png'
 import HourIcon from '../../public/hours img.png'
 import Image from "next/image";
+import imgThum from '../../public/img thumbnail.png'
 import line from '../../public/line.svg'
 import { Barlow, Work_Sans } from "next/font/google";
 import LandingForm from "./Components/Form/form";
 import { CarouselDemo } from "./Components/browserSerCarousel";
 import Tab from "./Components/Gallery";
 import TestimonialCarousel from "./Components/Reviews";
+import { useRouter } from "next/navigation";
+// import { useRouter } from "next/router";
 
 const barlow = Barlow({
   subsets: ["latin"], // Specify subsets as needed
@@ -31,6 +34,7 @@ const workSans = Work_Sans({
 
 
 export default function Home() {
+  const router = useRouter();
   const P = useRef<HTMLHeadingElement>(null);
 
   // Scroll function with correct type handling
@@ -49,7 +53,7 @@ export default function Home() {
           <p className={`${workSans.className} text-white text-[14px] lg:text-[20px] md:text-[18px] sm:text-[14px] mt-4`} >Experience the Convenience of In-Home Barber Services </p>
           <div className="flex justify-center items-center gap-6 mt-4">
             <button
-              // onClick={() => alert("BOOK AN APPOINTMENT clicked!")}
+              onClick={() => router.push('/Login')}
               className={`relative z-10 bg-[#DEC7A6] text-black py-3 px-6 font-extrabold text-sm sm:text-base md:text-lg lg:text-xl hover:opacity-90 transition-all !cursor-pointer ${barlow.className}`}
             >
               BOOK AN APPOINTMENT
@@ -116,11 +120,19 @@ export default function Home() {
             </div>
 
           </div>
-          <div className="lg:w-[40%] md:w-[40%] sm:w-[100%] w-[100%] p-4 mt-20">
-            <LandingForm />
+          <div className="lg:w-[40%] md:w-[40%] sm:w-[100%] w-[100%] p-4 mt-2">
+          <Image src={imgThum} alt="Description" className="" />
+            {/* <LandingForm /> */}
           </div>
-
         </div>
+        <div className="flex justify-center items-center mt-8">
+              <button
+                className={`relative z-10 bg-[#DEC7A6] text-black py-3 px-6 font-extrabold text-sm sm:text-base md:text-lg lg:text-xl hover:opacity-90 transition-all !cursor-pointer ${barlow.className}`}
+                onClick={() => router.push('/Login')}
+              >
+                BOOK AN APPOINTMENT
+              </button>
+            </div>
       </section>
 
       <section className="bg-[#F8F5EF] w-full p-4">

@@ -5,6 +5,7 @@ import Adult from "../../../public/Adult Hair.jpeg";
 // import BeardTrim from "../../../public/Beard Trim.avif";
 import Scalp from "../../../public/premium_photo-1706800175636-c3efbcf75c68.avif";
 import { Barlow } from "next/font/google";
+import { useRouter } from "next/navigation";
 
 const barlow = Barlow({
   subsets: ["latin"],
@@ -13,6 +14,7 @@ const barlow = Barlow({
 });
 
 const Tab = () => {
+  const router = useRouter();
   const images = [
     { id: 1, src: Beard, alt: "Image 1" },
     { id: 2, src: Adult, alt: "Image 2" },
@@ -67,6 +69,7 @@ const Tab = () => {
             <div className="flex justify-center items-center mt-8">
               <button
                 className={`relative z-10 bg-[#DEC7A6] text-black py-3 px-6 font-extrabold text-sm sm:text-base md:text-lg lg:text-xl hover:opacity-90 transition-all !cursor-pointer ${barlow.className}`}
+                onClick={() => router.push('/Login')}
               >
                 BOOK AN APPOINTMENT
               </button>
@@ -94,6 +97,7 @@ const Tab = () => {
           <div className="flex justify-center items-center mt-8">
               <button
                 className={`relative z-10 bg-[#DEC7A6] text-black py-3 px-6 font-extrabold text-sm sm:text-base md:text-lg lg:text-xl hover:opacity-90 transition-all !cursor-pointer ${barlow.className}`}
+                onClick={() => router.push('/Login')}
               >
                 BOOK AN APPOINTMENT
               </button>

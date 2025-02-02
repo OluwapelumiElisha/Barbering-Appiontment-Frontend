@@ -2,6 +2,7 @@
 import { IconArrowNarrowRight } from "@tabler/icons-react";
 import { Barlow, Work_Sans } from "next/font/google";
 import  { StaticImageData } from "next/image";
+import { useRouter } from "next/navigation";
 // import Image from "next/image";
 import { useState, useRef, useId, useEffect } from "react";
 const barlow = Barlow({
@@ -30,6 +31,7 @@ interface SlideProps {
 }
 
 const Slide = ({ slide, index, current, handleSlideClick }: SlideProps) => {
+  const router = useRouter();
   const slideRef = useRef<HTMLLIElement>(null);
 
   const xRef = useRef(0);
@@ -133,7 +135,7 @@ const Slide = ({ slide, index, current, handleSlideClick }: SlideProps) => {
             <h3 className={`text-center font-light lg:text-[16px] mt-2 ${workSans.className} md:text-[16px] sm:text-[12px] text-[14px]`}>{description}</h3>
             <h1 className="text-center mt-2 font-bold">${price}</h1>
             <button
-              onClick={() => alert()}
+            onClick={() => router.push('/Login')}
               className="lg:mt-5 md:mt-5 sm:mt-5 mt-2 px-4 py-2 w-fit mx-auto text-xs sm:text-sm md:text-base lg:text-lg text-black bg-white h-10 sm:h-12 md:h-14 border border-transparent flex justify-center items-center rounded-2xl hover:shadow-lg transition duration-200 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]"
             >
               {button}

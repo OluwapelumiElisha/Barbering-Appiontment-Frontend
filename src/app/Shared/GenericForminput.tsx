@@ -1,15 +1,15 @@
-import React from 'react';
-import { UseFormReturn, FieldValues, Path } from 'react-hook-form'; // Import Path
+import React from "react";
+import { UseFormReturn, Path, FieldValues} from "react-hook-form"; 
 import { 
   FormDescription, 
   FormField, 
   FormItem, 
   FormLabel, 
   FormMessage 
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 
 // Define the type for options used in select fields
 type OptionType = {
@@ -18,19 +18,19 @@ type OptionType = {
 };
 
 // Define the props type for GenericFormInput using a generic type
-interface GenericFormInputProps<TFieldValues extends FieldValues> {
+interface GenericFormInputProps<T extends FieldValues> {
   placeholder: string;
-  form: UseFormReturn<TFieldValues>; // Ensure strong typing for form
+  form: UseFormReturn<T>; // Ensure strong typing for form
   label: string;
-  name: Path<TFieldValues>; // Use Path type for name
-  type: 'text' | 'password' | 'email' | 'number' | 'textarea' | 'select';
+  name: Path<T>; // Use Path type for name
+  type: "text" | "password" | "email" | "number" | "textarea" | "select";
   required?: boolean;
   description?: string;
   options?: OptionType[];
 }
 
 // Make the component accept a generic type for form fields
-const GenericFormInput = <TFieldValues extends FieldValues>({
+const GenericFormInput = <T extends FieldValues>({
   placeholder,
   form,
   label,
@@ -39,76 +39,54 @@ const GenericFormInput = <TFieldValues extends FieldValues>({
   required,
   description,
   options,
-}: GenericFormInputProps<TFieldValues>) => {
-  switch (type) {
-    case 'text':
-    case 'password':
-    case 'email':
-    case 'number':
-      return (
-        <FormField
-          control={form.control}
-          name={name}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{label}</FormLabel>
-              <Input placeholder={placeholder} type={type} {...field} required={required} />
-              <FormMessage />
-              {description && <FormDescription>{description}</FormDescription>}
-            </FormItem>
+}: GenericFormInputProps<T>) => {
+  return (
+    <FormField
+      control={form.control}
+      name={name}
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel>{label}</FormLabel>
+
+          {/* Handle Different Field Types */}
+          {type === "textarea" ? (
+            <Textarea 
+              placeholder={placeholder} 
+              className="resize-none" 
+              {...field} 
+              required={required} 
+            />
+          ) : type === "select" ? (
+            <Select 
+              onValueChange={field.onChange} 
+              value={field.value || ""}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder={placeholder} />
+              </SelectTrigger>
+              <SelectContent>
+                {options?.map((opt) => (
+                  <SelectItem key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          ) : (
+            <Input 
+              placeholder={placeholder} 
+              type={type} 
+              {...field} 
+              required={required} 
+            />
           )}
-        />
-      );
 
-    case 'textarea':
-      return (
-        <FormField
-          control={form.control}
-          name={name}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{label}</FormLabel>
-              <Textarea placeholder={placeholder} className="resize-none" {...field} required={required} />
-              <FormMessage />
-              {description && <FormDescription>{description}</FormDescription>}
-            </FormItem>
-          )}
-        />
-      );
-
-    case 'select':
-      if (options) {
-        return (
-          <FormField
-            control={form.control}
-            name={name}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{label}</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <SelectTrigger>
-                    <SelectValue placeholder={placeholder} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {options.map((opt, i) => (
-                      <SelectItem key={i} value={opt.value}>
-                        {opt.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-                {description && <FormDescription>{description}</FormDescription>}
-              </FormItem>
-            )}
-          />
-        );
-      }
-      break;
-
-    default:
-      return null;
-  }
+          <FormMessage />
+          {description && <FormDescription>{description}</FormDescription>}
+        </FormItem>
+      )}
+    />
+  );
 };
 
 export default GenericFormInput;
