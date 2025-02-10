@@ -22,7 +22,7 @@ const formSchema = z.object({
 export const useLoginForm = () => {
   type FormData = z.infer<typeof formSchema>
   const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { login } = useAuth();
 
   const form = useForm<FormData>({

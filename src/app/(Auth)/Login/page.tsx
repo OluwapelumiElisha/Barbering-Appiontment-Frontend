@@ -11,6 +11,7 @@ import hidden from "../../../../public/hidden_2355322.png";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import LoadingIcon from '../../../../public/progress_activity_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.png'
 
 const barlow = Barlow({
   subsets: ["latin"], // Specify subsets as needed
@@ -25,7 +26,7 @@ const workSans = Work_Sans({
 
 const Login = () => {
     const router = useRouter();
-  const { onSubmit, form } = useLoginForm();
+  const { onSubmit, form, isLoading } = useLoginForm();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
@@ -97,9 +98,9 @@ const Login = () => {
                   </div>
                 ))}
                 <div className="flex items-center justify-center ">
-                  <Button className=" w-full bg-[#DEC7A6] mt-8" type="submit">
-                    Login
-                    {/* {loading ? "loading..." : "Sign Up"} */}
+                  <Button disabled={isLoading} className=" w-full bg-[#DEC7A6] mt-8" type="submit">
+                    {/* Login */}
+                    {isLoading ? <Image src={LoadingIcon} className="w-7 h-7 animate-spin" alt="Progress" /> : "Login"}
                   </Button>
                 </div>
                 <div className="flex items-center justify-center mt-5">

@@ -12,6 +12,7 @@ import { useState } from "react";
 import { signUpForm } from "./utils/signup";
 import { useRouter } from "next/navigation";
 import { useSignUpForm } from "./hook/useSignUp";
+import LoadingIcon from '../../../../public/progress_activity_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.png'
 
 const barlow = Barlow({
   subsets: ["latin"], // Specify subsets as needed
@@ -98,14 +99,14 @@ const SignUp = () => {
                 <div className="flex items-center justify-center ">
                   <Button className=" w-full bg-[#DEC7A6] mt-8" disabled={isLoading} type="submit">
                     {/* Sign Up */}
-                    {isLoading ? "loading..." : "Sign Up"}
+                    {isLoading ? <Image src={LoadingIcon} className="w-7 h-7 animate-spin" alt="Progress" />  : "Sign Up"}
                   </Button>
                 </div>
                 <div className="flex items-center justify-center mt-5">
                   <p className="lg:text-[16px] md:text-[14px] sm:text-[12px] text-[12px]">
                     Already have an account?
                   </p>
-                  <p onClick={() => router.push('/SignUp')} className="text-[#DEC7A6] font-bold cursor-pointer pl-2 ">
+                  <p onClick={() => router.push('/Login')} className="text-[#DEC7A6] font-bold cursor-pointer pl-2 ">
                     Login 
                   </p>
                 </div>

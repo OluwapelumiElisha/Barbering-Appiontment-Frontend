@@ -1,7 +1,6 @@
-"use client"; // Ensure it's a Client Component
-
+"use client";
 import { createContext, useContext, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
 import { UserRequest } from "../Shared/API/Request";
 
@@ -27,67 +26,83 @@ interface AuthContextType {
 // Create Context
 const AuthContext = createContext<AuthContextType | null>(null);
 
-// Auth Provider Component
+// ✅ Define Protected Routes (Ensure lowercase & exact format)
+const PROTECTED_ROUTES = ["/dashboard"];
+
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [authToken, setAuthToken] = useState<string | null>(
-    () => typeof window !== "undefined" ? localStorage.getItem("token") : null
-  );
+  const [authToken, setAuthToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const pathname = usePathname().toLowerCase(); // ✅ Ensure it's lowercase
 
-  // Fetch user when token changes
+  // ✅ Fetch token from localStorage when the app loads
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    console.log("🔍 Checking stored token:", token);
+    setAuthToken(token); // ✅ Only update state after localStorage is checked
+    setLoading(false); // ✅ Mark loading as false after getting token
+  }, []);
 
-    if (!authToken) {
-    //   console.log("❌ [AuthContext] No token found. Redirecting to Login.");
-      setLoading(false);
-      router.replace("/Login");
+  useEffect(()=>{
+    if (authToken) {
+      console.log('Y not working');
+      router.push("/Dashboard");
+    }
+  },[authToken, pathname, loading])
+
+  // ✅ Fetch user when `authToken` is available
+  useEffect(() => {
+    if (loading) return; // ✅ Wait until loading is false before checking auth
+
+    if (!authToken && PROTECTED_ROUTES.includes(pathname)) {
+      console.log("❌ No token found. Redirecting to Login...");
+      router.replace("/Login"); // ✅ Only redirect if trying to access a protected page
       return;
     }
 
-    const getCurrentUser = async () => {
-      try {
-        // console.log("🛠️ [AuthContext] Fetching user from API...");
-        const res = await UserRequest().get<{ user: User }>("/auth/checkAuth");
-        console.log("✅ [AuthContext] API Response:", res);
+    if (authToken) {
+      const getCurrentUser = async () => {
+        try {
+          console.log("🔄 Fetching user from API...");
+          const res = await UserRequest().get("/auth/checkAuth");
+          console.log("✅ User fetched:", res?.data);
 
-        if (res?.data?.user) {
-          setCurrentUser(res.data.user);
-          console.log("👤 [AuthContext] User Fetched:", res.data.user);
-        } else {
-          console.log("⚠️ [AuthContext] No user data received!");
+          if (res) {
+            setCurrentUser(res?.data);
+            
+          } else {
+            console.log("⚠️ No user data received!");
+          }
+        } catch (error) {
+          console.error("❌ Error fetching user:", error);
+          toast({
+            title: "Session Expired",
+            description: "Your session has expired. Please log in again.",
+          });
+
+          logout();
         }
-      } catch (error: unknown) {
-        console.error("❌ [AuthContext] Error fetching user:", error);
-        toast({
-          title: "Session Expired",
-          description: "Your session has expired. Please log in again.",
-        });
+      };
 
-        logout();
-      } finally {
-        setLoading(false);
-      }
-    };
+      getCurrentUser();
+    }
+  }, [authToken, pathname, loading]); // ✅ Ensure it only runs after `loading` is false
 
-    getCurrentUser();
-  }, [authToken, router]);
-
-  // Function to set token & fetch user after login
+  // ✅ Function to set token & fetch user after login
   const login = (token: string) => {
-    // console.log("🔑 [AuthContext] User Logged In - Token:", token);
+    console.log("🔑 User Logged In - Storing token:", token);
     localStorage.setItem("token", token);
     setAuthToken(token);
   };
 
-  // Logout Function
+  // ✅ Logout Function
   const logout = () => {
-    console.log("🚪 [AuthContext] Logging out user...");
+    console.log("🚪 Logging out user...");
     localStorage.removeItem("token");
     setAuthToken(null);
     setCurrentUser(null);
-    router.replace("/Login");
+    router.replace("/login"); // ✅ Ensure correct case for route
   };
 
   return (
@@ -100,7 +115,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         logout,
       }}
     >
-      {!loading && children}
+      {!loading && children} {/* ✅ Prevent flashing Login page before checking auth */}
     </AuthContext.Provider>
   );
 };
