@@ -54,11 +54,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (loading) return; // ✅ Wait until loading is false before checking auth
 
-    // if (!authToken && PROTECTED_ROUTES.includes(pathname)) {
-    //   console.log("❌ No token found. Redirecting to Login...");
-    //   router.replace("/Logi"); // ✅ Only redirect if trying to access a protected page
-    //   return;
-    // }
+    if (!authToken && PROTECTED_ROUTES.includes(pathname)) {
+      console.log("❌ No token found. Redirecting to Login...");
+      router.replace("/Logi"); // ✅ Only redirect if trying to access a protected page
+      return;
+    }
 
     if (authToken) {
       const getCurrentUser = async () => {

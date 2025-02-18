@@ -43,4 +43,4 @@ function LandingForm() {
     )
 }
 
-export default Form
+export default LandingForm

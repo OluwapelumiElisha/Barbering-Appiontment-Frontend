@@ -14,7 +14,7 @@ import Image from "next/image";
 import imgThum from '../../public/img thumbnail.png'
 import line from '../../public/line.svg'
 import { Barlow, Work_Sans } from "next/font/google";
-// import LandingForm from "./Components/Form/form";
+import LandingForm from "./Components/Form/form";
 import { CarouselDemo } from "./Components/browserSerCarousel";
 import Tab from "./Components/Gallery";
 import TestimonialCarousel from "./Components/Reviews";
@@ -261,7 +261,7 @@ export default function Home() {
 
     {/* Form Section */}
     <div className="w-full lg:w-[40%] p-6 mt-10 sm:mt-20 lg:mt-0 bg-white shadow-lg rounded-lg z-10">
-      {/* <LandingForm /> */}
+      <LandingForm />
     </div>
   </div>
 </section>

@@ -5,12 +5,12 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "../context/AuthContext";
 import {
-  FiGrid, FiBook, FiMessageCircle, FiDollarSign, FiSettings, FiUser, FiMenu, FiX
+  FiGrid, FiBook, FiMessageCircle, FiDollarSign, FiSettings, FiMenu, FiX
 } from "react-icons/fi";
 import Image from "next/image";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const { currentUser, isClient, isBarber, logout } = useAuth();
+  const { currentUser } = useAuth();
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
 
