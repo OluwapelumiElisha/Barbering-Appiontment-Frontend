@@ -17,7 +17,7 @@ function Dashboard() {
     } else if (isBarber) {
       router.push("/Dashboard/Barber");
     }
-  }, [currentUser, isClient, isBarber, router]);
+  }, []);
 
   return <p>Redirecting...</p>;
 }

@@ -44,12 +44,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setLoading(false); // ✅ Mark loading as false after getting token
   }, []);
 
-  useEffect(()=>{
-    if (authToken) {
-      console.log('Y not working');
-      router.push("/Dashboard");
-    }
-  },[authToken, pathname, loading])
+ 
+
+
+
+  
 
   // ✅ Fetch user when `authToken` is available
   useEffect(() => {
@@ -88,6 +87,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       getCurrentUser();
     }
   }, [authToken, pathname, loading]); // ✅ Ensure it only runs after `loading` is false
+
+  useEffect(() => {
+    if (!loading && authToken && currentUser?.role) {
+      if (currentUser?.role === 'client'){
+        router.replace(`/Dashboard/User`);
+      } else {
+        router.replace(`/Dashboard/Barber`);
+      }
+    }
+  }, [authToken, currentUser?.role, loading, router]);
 
   // ✅ Function to set token & fetch user after login
   const login = (token: string) => {

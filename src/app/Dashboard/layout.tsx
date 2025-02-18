@@ -1,10 +1,13 @@
 "use client";
 
-// import { useAuth } from "@/context/AuthContext";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "../context/AuthContext";
+import {
+  FiGrid, FiBook, FiMessageCircle, FiDollarSign, FiSettings, FiUser, FiMenu, FiX
+} from "react-icons/fi";
+import Image from "next/image";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { currentUser, isClient, isBarber, logout } = useAuth();
@@ -18,44 +21,68 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   }, [currentUser, router]);
 
   return (
-    <div className="flex h-screen">
-      {/* Mobile Menu Toggle */}
-      <button className="md:hidden p-4" onClick={() => setMenuOpen(!menuOpen)}>
-        ☰
-      </button>
-
+    <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
-      <aside className={`absolute md:relative md:block w-60 bg-gray-900 text-white p-6 transition-all ${menuOpen ? "block" : "hidden md:block"}`}>
-        <h2 className="text-2xl font-bold mb-6">Dashboard</h2>
-        <ul>
-          <li><Link href="/dashboard" className="block py-2 hover:bg-gray-700">Home</Link></li>
+      <aside className={`fixed md:relative w-64 bg-gray-900 text-white transition-all duration-300 ${menuOpen ? "left-0" : "-left-64"} md:left-0 z-50 h-full flex flex-col`}>
+        {/* Sidebar Header with Toggle Button */}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-700">
+          <h2 className="text-xl font-bold ml-8">Byway</h2>
+          {/* <button className="md:hidden text-white" onClick={() => setMenuOpen(!menuOpen)}>
+            {menuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+          </button> */}
+        </div>
 
-          {/* Show links based on role */}
-          {isClient && (
-            <>
-              <li><Link href="/dashboard/client/appointments" className="block py-2 hover:bg-gray-700">My Appointments</Link></li>
-              <li><Link href="/dashboard/client/services" className="block py-2 hover:bg-gray-700">Services</Link></li>
-              <li><Link href="/dashboard/client/reviews" className="block py-2 hover:bg-gray-700">My Reviews</Link></li>
-              <li><Link href="/dashboard/client/profile" className="block py-2 hover:bg-gray-700">Profile</Link></li>
-            </>
-          )}
+        {/* Navigation */}
+        <nav className="mt-6 flex-1">
+          <ul>
+            <li>
+              <Link href="/Dashboard" className="flex items-center px-6 py-3 hover:bg-gray-700">
+                <FiGrid className="mr-3" /> Dashboard
+              </Link>
+            </li>
+            <li>
+              <Link href="/Dashboard/Courses" className="flex items-center px-6 py-3 text-blue-400 hover:bg-gray-700">
+                <FiBook className="mr-3" /> Courses
+              </Link>
+            </li>
+            <li>
+              <Link href="/Dashboard/Communication" className="flex items-center px-6 py-3 hover:bg-gray-700">
+                <FiMessageCircle className="mr-3" /> Communication
+              </Link>
+            </li>
+            <li>
+              <Link href="/Dashboard/Revenue" className="flex items-center px-6 py-3 hover:bg-gray-700">
+                <FiDollarSign className="mr-3" /> Revenue
+              </Link>
+            </li>
+            <li>
+              <Link href="/Dashboard/Setting" className="flex items-center px-6 py-3 hover:bg-gray-700">
+                <FiSettings className="mr-3" /> Setting
+              </Link>
+            </li>
+          </ul>
+        </nav>
 
-          {isBarber && (
-            <>
-              <li><Link href="/dashboard/barber/appointments" className="block py-2 hover:bg-gray-700">Manage Appointments</Link></li>
-              <li><Link href="/dashboard/barber/schedule" className="block py-2 hover:bg-gray-700">My Schedule</Link></li>
-              <li><Link href="/dashboard/barber/reviews" className="block py-2 hover:bg-gray-700">Client Reviews</Link></li>
-              <li><Link href="/dashboard/barber/profile" className="block py-2 hover:bg-gray-700">Profile</Link></li>
-            </>
-          )}
-        </ul>
-        <button className="mt-6 bg-red-500 px-4 py-2 rounded-lg w-full" onClick={logout}>
-          Logout
-        </button>
+        {/* Profile Section */}
+        <div className="px-6 py-4 border-t border-gray-700 flex items-center">
+          <Image
+            src={currentUser?.profilePic || "/default-profile-pic.jpg"}
+            alt="User Avatar"
+            className="w-10 h-10 rounded-full border border-gray-700"
+            width={100}
+            height={100}
+          />
+          <span className="ml-3">Hi, {currentUser?.name || "John"}</span>
+        </div>
       </aside>
 
+      {/* Mobile Menu Button (One Icon for Open/Close) */}
+      <button className="md:hidden fixed top-3.5 left-2 z-50 bg-gray-900 text-white p-2 rounded-full" onClick={() => setMenuOpen(!menuOpen)}>
+        {menuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+      </button>
+
       {/* Main Content */}
-      <main className="flex-1 p-6 bg-gray-100">{children}</main>
+      <main className="flex-1 p-6 overflow-auto">{children}</main>
     </div>
   );
 }

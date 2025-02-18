@@ -12,7 +12,7 @@ function LandingForm() {
     return (
         <div>
             <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
+            <form onSubmit={form.handle-Submit(onSubmit)}>
               {FormInput.map((elem, i) => (
                 <div key={i + elem.name} className={`${
                     (elem.type === "email" || elem.type === "number") ? "inline-block w-[48%] mr-[2%] last:mr-0" : ""
